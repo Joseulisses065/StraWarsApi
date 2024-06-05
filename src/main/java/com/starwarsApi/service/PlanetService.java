@@ -1,8 +1,10 @@
 package com.starwarsApi.service;
 
 import com.starwarsApi.domain.model.Planet;
+import com.starwarsApi.exception.UniqueDataException;
 import com.starwarsApi.repository.PlanetRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,10 @@ public class PlanetService {
 
     @Transactional
     public Planet save(Planet planet) {
-        return planetRepository.save(planet);
-    }
+        try {
+            return planetRepository.save(planet);
+        }catch (DataIntegrityViolationException ex){
+            throw new UniqueDataException("Unique date violation "+ex.getMessage());
+        }
+        }
 }
