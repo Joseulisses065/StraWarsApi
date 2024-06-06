@@ -1,19 +1,17 @@
 package com.starwarsApi.web.exception;
 
+import com.starwarsApi.exception.EntityNotFounException;
 import com.starwarsApi.exception.UniqueDataException;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestController
+@RestControllerAdvice
 public class ApiExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -24,9 +22,16 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(UniqueDataException.class)
-    public ResponseEntity<ErrorMessage> UniqueDataException(UniqueDataException ex,HttpServletRequest request){
+    public ResponseEntity<ErrorMessage> uniqueDataException(UniqueDataException ex,HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request,HttpStatus.CONFLICT,ex.getMessage()));
+    }
+
+    @ExceptionHandler(EntityNotFounException.class)
+    public ResponseEntity<ErrorMessage> entityNotFoundException(EntityNotFounException ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.NOT_FOUND,ex.getMessage()));
     }
 }

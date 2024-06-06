@@ -2,13 +2,16 @@ package com.starwarsApi.web.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@Getter
+@Setter
 public class ErrorMessage {
     private String path;
     private String method;
