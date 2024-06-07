@@ -1,6 +1,7 @@
 package com.starwarsApi.web.controller;
 
 import com.starwarsApi.domain.model.Planet;
+import com.starwarsApi.exception.EntityNotFounException;
 import com.starwarsApi.service.PlanetService;
 import com.starwarsApi.web.dto.PlanetCreateDto;
 import com.starwarsApi.web.dto.PlanetResponseDto;
@@ -34,14 +35,24 @@ public class PlanetController {
     @Operation(description = "Find planet by id")
     @GetMapping("/{id}")
     public ResponseEntity<PlanetResponseDto> findById(@PathVariable Long id){
-        Planet entity = planetService.findById(id);
-        return ResponseEntity.ok(PlanetMapper.toDto(entity));
+        try {
+            Planet entity = planetService.findById(id);
+            return ResponseEntity.ok(PlanetMapper.toDto(entity));
+        }catch (RuntimeException ex){
+            return ResponseEntity.notFound().build();
+        }
+
     }
     @Operation(description = "Find planet by name")
     @GetMapping("/name/{name}")
     public ResponseEntity<PlanetResponseDto> findByName(@PathVariable String name){
-        Planet entity = planetService.findByName(name);
-        return ResponseEntity.ok(PlanetMapper.toDto(entity));
+        try {
+            Planet entity = planetService.findByName(name);
+            return ResponseEntity.ok(PlanetMapper.toDto(entity));
+        }catch (RuntimeException e){
+            return ResponseEntity.notFound().build();
+        }
+
     }
     @GetMapping
     public ResponseEntity<Page<PlanetResponseDto>> listAll(@RequestParam(required = false) String terrain, @RequestParam(required = false) String climate, Pageable page){
@@ -50,8 +61,13 @@ public class PlanetController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        planetService.delete(id);
-        return ResponseEntity.noContent().build();
+        try {
+            planetService.delete(id);
+            return ResponseEntity.noContent().build();
+        }catch (RuntimeException ex){
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 }

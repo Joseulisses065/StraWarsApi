@@ -4,7 +4,6 @@ import static com.starwarsApi.common.PlanetConstatnts.INVALIDPLANET;
 import static com.starwarsApi.common.PlanetConstatnts.PLANET;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +20,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -126,7 +124,7 @@ public class PlanetServiceTest {
     }
 
     @Test
-    public void getPlanet_ByExistingId_ThrowsEntityNotFoundException() {
+    public void getPlanet_ByUnxistingId_ThrowsEntityNotFoundException() {
         doThrow(new RuntimeException()).when(planetRepository).deleteById(99L);
         assertThatThrownBy(() -> planetRepository.deleteById(99L)).isInstanceOf(RuntimeException.class);
 

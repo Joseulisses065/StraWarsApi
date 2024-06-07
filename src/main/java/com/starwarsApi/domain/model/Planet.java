@@ -1,6 +1,7 @@
 package com.starwarsApi.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +21,13 @@ public class Planet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
     @Column(name = "name",nullable = false,unique = true)
     private String name;
+    @NotEmpty
     @Column(name = "climate",nullable = false)
     private String climate;
+    @NotEmpty
     @Column(name = "terrain",nullable = false)
     private String terrain;
 
